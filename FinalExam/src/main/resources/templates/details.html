@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Trang chi tiết thông tin sinh viên -->
+    <title>Chi Tiết Sinh Viên</title>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h2>Thông Tin Chi Tiết Sinh Viên</h2>
+
+    <!-- Thông tin cơ bản sinh viên -->
+    <div class="card mt-4">
+        <div class="card-header">
+            <h5 class="card-title mb-0">Thông Tin Cơ Bản</h5>
+        </div>
+        <div class="card-body">
+            <p class="card-text">
+                <strong>Mã Sinh Viên:</strong> <span th:text="${student.studentCode}"></span><br>
+                <strong>Họ và Tên:</strong> <span th:text="${student.fullName}"></span><br>
+                <strong>Địa Chỉ:</strong> <span th:text="${student.address}"></span>
+            </p>
+        </div>
+    </div>
+
+    <!-- Bảng điểm của sinh viên -->
+    <div class="card mt-4">
+        <div class="card-header">
+            <h5 class="card-title mb-0">Bảng Điểm</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Mã Môn</th>
+                    <th>Tên Môn Học</th>
+                    <th>Số Tín Chỉ</th>
+                    <th>Điểm 1</th>
+                    <th>Điểm 2</th>
+                    <th>Điểm TB</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="score : ${student.scoreList}">
+                    <td th:text="${score.subject.subjectCode}"></td>
+                    <td th:text="${score.subject.subjectName}"></td>
+                    <td th:text="${score.subject.credit}"></td>
+                    <td th:text="${score.score1}"></td>
+                    <td th:text="${score.score2}"></td>
+                    <td th:text="${(score.score1 + score.score2) / 2}"></td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(student.scoreList)}">
+                    <td colspan="6" class="text-center">Chưa có điểm</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Nút điều hướng -->
+    <div class="mt-4">
+        <a th:href="@{/}" class="btn btn-primary">Quay Lại Danh Sách</a>
+        <a th:href="@{/edit/{id}(id=${student.studentId})}" class="btn btn-warning">Chỉnh Sửa</a>
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+            Xóa Sinh Viên
+        </button>
+    </div>
+
+    <!-- Modal xác nhận xóa -->
+    <div class="modal fade" id="deleteModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Xác Nhận Xóa</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    Bạn có chắc chắn muốn xóa sinh viên này không?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <form th:action="@{/delete/{id}(id=${student.studentId})}" method="post" style="display: inline;">
+                        <button type="submit" class="btn btn-danger">Xác Nhận Xóa</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

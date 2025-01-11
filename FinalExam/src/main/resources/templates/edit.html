@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Chỉnh Sửa Sinh Viên</title>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <!-- Form chỉnh sửa thông tin sinh viên -->
+    <h2>Chỉnh Sửa Sinh Viên</h2>
+    <form th:action="@{/update/{id}(id=${student.studentId})}" th:object="${student}" method="post" class="mt-4">
+
+        <!-- Mã sinh viên (không thay đổi) -->
+        <div class="mb-3">
+            <label for="studentCode" class="form-label">Mã Sinh Viên:</label>
+            <input type="text" class="form-control" id="studentCode" th:field="*{studentCode}" disabled required>
+            <span class="text-danger" th:if="${#fields.hasErrors('studentCode')}" th:errors="*{studentCode}"></span>
+        </div>
+
+        <!-- Họ và tên -->
+        <div class="mb-3">
+            <label for="fullName" class="form-label">Họ và Tên:</label>
+            <input type="text" class="form-control" id="fullName" th:field="*{fullName}" required>
+            <span class="text-danger" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"></span>
+        </div>
+
+        <!-- Địa chỉ -->
+        <div class="mb-3">
+            <label for="address" class="form-label">Địa Chỉ:</label>
+            <textarea class="form-control" id="address" th:field="*{address}" rows="3"></textarea>
+            <span class="text-danger" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></span>
+        </div>
+
+        <!-- Nút điều khiển -->
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary">Cập Nhật</button>
+            <a th:href="@{/details/{id}(id=${student.studentId})}" class="btn btn-secondary">Quay Lại</a>
+        </div>
+    </form>
+</div>
+
+<!-- Bootstrap JS và các dependencies -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

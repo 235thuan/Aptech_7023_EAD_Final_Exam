@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Thêm Điểm</title>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+</head>
+<body>
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Thêm Điểm Mới</h2>
+        <a th:href="@{/}" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Quay lại
+        </a>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Thông tin sinh viên</h5>
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="mb-1">Mã sinh viên: <strong th:text="${student.studentCode}"></strong></p>
+                    <p class="mb-1">Họ tên: <strong th:text="${student.fullName}"></strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alert for errors -->
+    <div th:if="${error}" class="alert alert-danger" role="alert">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        <span th:text="${error}"></span>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <form th:action="@{/create/{id}(id=${student.studentId})}"
+                  th:object="${score}" method="post">
+
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label for="subject" class="form-label">Môn học:</label>
+                        <select class="form-select" id="subject" th:field="*{subject.subjectId}" required>
+                            <option th:value="-1">-- Chọn môn học --</option>
+                            <option th:each="subject : ${subjects}"
+                                    th:value="${subject.subjectId}"
+                                    th:text="${subject.subjectCode + ' - ' + subject.subjectName}">
+                            </option>
+                        </select>
+                        <div class="text-danger" th:if="${#fields.hasErrors('subject')}">
+                            <small th:errors="*{subject}"></small>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="score1" class="form-label">Điểm 1:</label>
+                        <input type="number" class="form-control" id="score1"
+                               th:field="*{score1}" required step="0.1" min="0" max="10">
+                        <div class="text-danger" th:if="${#fields.hasErrors('score1')}">
+                            <small th:errors="*{score1}"></small>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="score2" class="form-label">Điểm 2:</label>
+                        <input type="number" class="form-control" id="score2"
+                               th:field="*{score2}" required step="0.1" min="0" max="10">
+                        <div class="text-danger" th:if="${#fields.hasErrors('score2')}">
+                            <small th:errors="*{score2}"></small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2">
+                    <a th:href="@{/}" class="btn btn-secondary">
+                        <i class="bi bi-x-circle"></i> Hủy
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-circle"></i> Lưu
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Student Score</title>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h2>Student Score</h2>
+
+    <!-- Hiển thị lỗi nếu có -->
+    <div th:if="${error}" class="alert alert-danger" role="alert">
+        <span th:text="${error}"></span>
+    </div>
+
+    <form th:action="@{/score/create}" th:object="${score}" method="post" class="mt-4">
+        <!-- Chọn sinh viên -->
+        <div class="mb-3">
+            <label for="student" class="form-label">Student:</label>
+            <select class="form-select" id="student" th:field="*{student}" required>
+                <option value="">-- Select student --</option>
+                <option th:each="student : ${students}"
+                        th:value="${student.studentId}"
+                        th:text="${student.studentCode + ' - ' + student.fullName}">
+                </option>
+            </select>
+        </div>
+
+        <!-- Chọn môn học -->
+        <div class="mb-3">
+            <label for="subject" class="form-label">Subject:</label>
+            <select class="form-select" id="subject" th:field="*{subject}" required>
+                <option value="">-- Select subject --</option>
+                <option th:each="subject : ${subjects}"
+                        th:value="${subject.subjectId}"
+                        th:text="${subject.subjectCode + ' - ' + subject.subjectName}">
+                </option>
+            </select>
+        </div>
+
+        <!-- Nhập điểm -->
+        <div class="mb-3">
+            <label for="score1" class="form-label">Score 1:</label>
+            <input type="number" step="0.1" class="form-control" id="score1"
+                   th:field="*{score1}" required min="0" max="10">
+        </div>
+
+        <div class="mb-3">
+            <label for="score2" class="form-label">Score 2:</label>
+            <input type="number" step="0.1" class="form-control" id="score2"
+                   th:field="*{score2}" required min="0" max="10">
+        </div>
+
+        <!-- Nút submit -->
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a th:href="@{/}" class="btn btn-secondary">Back</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>
